@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+
+  audio:
+    image: balenablocks/audio
+    privileged: true
+    labels:
+      io.balena.features.dbus: 1
+    ports:
+      - 4317:4317
+
+  multiroom-server:
+    build: ./
+    restart: on-failure
+    ports:
+      - 1704:1704
+      - 1705:1705
+      - 1780:1780
+
+  multiroom-client:
+    build: ./
+    restart: on-failure
+    environment:
+      MULTI_ROOM_MODE: "CLIENT"

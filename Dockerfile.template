@@ -1,0 +1,68 @@
+ARG ALPINE_VERSION=3.13
+
+### Build Snapweb ###
+FROM balenalib/%%BALENA_ARCH%%-alpine-node:$ALPINE_VERSION as snapweb-builder
+WORKDIR /usr/src
+
+RUN install_packages git make npm
+
+RUN git clone https://github.com/badaix/snapweb.git snapweb
+RUN npm install --global --no-save typescript
+RUN cd snapweb && make
+
+### Build Snapcast ###
+FROM balenalib/%%BALENA_ARCH%%-alpine:$ALPINE_VERSION as snapcast-builder
+WORKDIR /usr/src
+
+ENV SNAPCAST_VERSION=0.25.0
+
+RUN install_packages \
+      alsa-lib-dev \
+      asio-dev \
+      avahi-dev  \
+      build-base \
+      ccache \
+      cmake \
+      flac-dev \
+      git \
+      libvorbis-dev \
+      opus-dev
+
+# Build from source
+RUN git clone https://github.com/badaix/snapcast.git snapcast 
+WORKDIR /usr/src/snapcast
+
+RUN git checkout tags/v$SNAPCAST_VERSION
+RUN cmake -B build \
+      -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+      -DCMAKE_BUILD_TYPE=Release
+RUN cmake --build build
+
+### Run stage ###
+FROM balenalib/%%BALENA_ARCH%%-alpine:$ALPINE_VERSION
+WORKDIR /usr/src
+
+# Audio block setup
+ENV PULSE_SERVER=tcp:audio:4317
+RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/alpine-setup.sh| sh
+
+# Copy files
+COPY --from=snapcast-builder /usr/src/snapcast/bin/snap* /usr/bin/
+COPY --from=snapweb-builder /usr/src/snapweb/dist/* /var/www/
+COPY snapserver.conf /etc/snapserver.conf
+COPY snapclient.conf /etc/conf.d/snapcast-client
+COPY entry.sh .
+
+RUN install_packages \
+      alsa-lib \
+      avahi-libs \
+      expat\
+      flac \
+      libvorbis \
+      opus \
+      soxr
+
+EXPOSE 1704 1705 1780
+ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
+
+CMD [ "snapserver" ]
