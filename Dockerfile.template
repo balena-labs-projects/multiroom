@@ -1,7 +1,8 @@
 ARG ALPINE_VERSION=3.13
+ARG BALENA_ARCH=%%BALENA_ARCH%%
 
 ### Build Snapweb ###
-FROM balenalib/%%BALENA_ARCH%%-alpine-node:$ALPINE_VERSION as snapweb-builder
+FROM balenalib/$BALENA_ARCH-alpine-node:$ALPINE_VERSION as snapweb-builder
 WORKDIR /usr/src
 
 RUN install_packages git make npm
@@ -11,7 +12,7 @@ RUN npm install --global --no-save typescript
 RUN cd snapweb && make
 
 ### Build Snapcast ###
-FROM balenalib/%%BALENA_ARCH%%-alpine:$ALPINE_VERSION as snapcast-builder
+FROM balenalib/$BALENA_ARCH-alpine:$ALPINE_VERSION as snapcast-builder
 WORKDIR /usr/src
 
 ENV SNAPCAST_VERSION=0.25.0
@@ -39,7 +40,7 @@ RUN cmake -B build \
 RUN cmake --build build
 
 ### Run stage ###
-FROM balenalib/%%BALENA_ARCH%%-alpine:$ALPINE_VERSION
+FROM balenalib/$BALENA_ARCH-alpine:$ALPINE_VERSION
 WORKDIR /usr/src
 
 # Audio block setup
@@ -50,7 +51,6 @@ RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/sc
 COPY --from=snapcast-builder /usr/src/snapcast/bin/snap* /usr/bin/
 COPY --from=snapweb-builder /usr/src/snapweb/dist/* /var/www/
 COPY snapserver.conf /etc/snapserver.conf
-COPY snapclient.conf /etc/conf.d/snapcast-client
 COPY entry.sh .
 
 RUN install_packages \
@@ -63,6 +63,6 @@ RUN install_packages \
       soxr
 
 EXPOSE 1704 1705 1780
-ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
 
+ENTRYPOINT [ "/bin/bash", "/usr/src/entry.sh" ]
 CMD [ "snapserver" ]

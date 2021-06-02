@@ -21,5 +21,4 @@ services:
   multiroom-client:
     build: ./
     restart: on-failure
-    environment:
-      MULTI_ROOM_MODE: "CLIENT"
+    command: snapclient
