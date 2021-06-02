@@ -5,15 +5,23 @@ set -e
 /usr/bin/entry.sh echo ""
 
 # Get mode
-if [[ "$@" == *"snapclient"* ]]; then
-  MULTI_ROOM_MODE="client"
-else
-  MULTI_ROOM_MODE="server"
-fi
+case "$@" in
+  *"snapclient"*)
+    MULTI_ROOM_MODE="client"
+    ;;
+
+  *"snapserver"*)
+    MULTI_ROOM_MODE="server"
+    ;;
+
+  *)
+    MULTI_ROOM_MODE="bash"
+    ;;
+esac
 
 echo "--- Multiroom ---"
 echo "Starting multiroom service with settings:"
-echo "- Mode: $MULTI_ROOM_MODE"
+echo "- Multiroom mode: $MULTI_ROOM_MODE"
 echo "- Snapcast version: $(snapserver --version | head -n 1 | cut -d' ' -f2)"
 
 # Add defaults to client
