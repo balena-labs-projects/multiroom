@@ -1,0 +1,24 @@
+name: multiroom
+description: Set up multiroom audio for your fleet of devices. Uses the Snapcast audio player.
+version: 0.0.1
+type: sw.application
+assets:
+  repository:
+    type: blob.asset
+    data:
+      url: 'https://github.com/balenablocks/multiroom'
+  logo:
+    type: blob.asset
+    data:
+      url: 'https://raw.githubusercontent.com/balenablocks/multiroom/master/logo.png'
+data:
+  defaultDeviceType: raspberrypi4-64
+  supportedDeviceTypes:
+    - raspberry-pi
+    - raspberry-pi2
+    - raspberrypi3
+    - raspberrypi3-64
+    - raspberrypi4-64
+    - intel-nuc
+    - jetson-nano
+    - beaglebone-black
