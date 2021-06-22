@@ -24,10 +24,13 @@ RUN install_packages \
       build-base \
       ccache \
       cmake \
+      expat-dev \
       flac-dev \
       git \
       libvorbis-dev \
-      opus-dev
+      opus-dev \
+      pulseaudio-dev \
+      soxr-dev
 
 # Build from source
 RUN git clone https://github.com/badaix/snapcast.git snapcast 
@@ -36,6 +39,7 @@ WORKDIR /usr/src/snapcast
 RUN git checkout tags/v$SNAPCAST_VERSION
 RUN cmake -B build \
       -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+      -DBUILD_WITH_PULSE=ON \
       -DCMAKE_BUILD_TYPE=Release
 RUN cmake --build build
 
@@ -58,6 +62,7 @@ RUN install_packages \
       avahi-libs \
       expat\
       flac \
+      libpulse \
       libvorbis \
       opus \
       soxr
