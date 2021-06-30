@@ -29,7 +29,6 @@ RUN install_packages \
       git \
       libvorbis-dev \
       opus-dev \
-      pulseaudio-dev \
       soxr-dev
 
 # Build from source
@@ -39,7 +38,6 @@ WORKDIR /usr/src/snapcast
 RUN git checkout tags/v$SNAPCAST_VERSION
 RUN cmake -B build \
       -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-      -DBUILD_WITH_PULSE=ON \
       -DCMAKE_BUILD_TYPE=Release
 RUN cmake --build build
 
@@ -49,7 +47,7 @@ WORKDIR /usr/src
 
 # Audio block setup
 ENV PULSE_SERVER=tcp:audio:4317
-RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/alpine-setup.sh| sh
+RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/alpine-setup.sh | sh
 
 # Copy files
 COPY --from=snapcast-builder /usr/src/snapcast/bin/snap* /usr/bin/
@@ -62,7 +60,6 @@ RUN install_packages \
       avahi-libs \
       expat\
       flac \
-      libpulse \
       libvorbis \
       opus \
       soxr
