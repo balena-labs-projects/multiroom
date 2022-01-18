@@ -15,7 +15,7 @@ RUN cd snapweb && make
 FROM balenalib/$BALENA_ARCH-alpine:$ALPINE_VERSION as snapcast-builder
 WORKDIR /usr/src
 
-ENV SNAPCAST_VERSION=0.25.0
+ENV SNAPCAST_VERSION=0.26.0
 
 RUN install_packages \
       alsa-lib-dev \
