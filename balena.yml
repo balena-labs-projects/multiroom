@@ -2,7 +2,7 @@ name: multiroom
 description: >-
   Set up multiroom audio for your fleet of devices. Uses the Snapcast audio
   player.
-version: 0.0.2
+version: 0.1.0
 type: sw.application
 assets:
   repository:
