@@ -47,7 +47,7 @@ WORKDIR /usr/src
 
 # Audio block setup
 ENV PULSE_SERVER=tcp:audio:4317
-RUN curl --silent https://raw.githubusercontent.com/balenablocks/audio/master/scripts/alsa-bridge/alpine-setup.sh | sh
+RUN curl --silent https://raw.githubusercontent.com/balena-labs-projects/audio/master/scripts/alsa-bridge/alpine-setup.sh | sh
 
 # Copy files
 COPY --from=snapcast-builder /usr/src/snapcast/bin/snap* /usr/bin/

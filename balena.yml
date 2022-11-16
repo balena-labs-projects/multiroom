@@ -8,11 +8,11 @@ assets:
   repository:
     type: blob.asset
     data:
-      url: 'https://github.com/balenablocks/multiroom'
+      url: 'https://github.com/balena-labs-projects/multiroom'
   logo:
     type: blob.asset
     data:
-      url: 'https://raw.githubusercontent.com/balenablocks/multiroom/master/logo.png'
+      url: 'https://raw.githubusercontent.com/balena-labs-projects/multiroom/master/logo.png'
 data:
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
