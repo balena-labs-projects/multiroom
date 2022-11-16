@@ -1,12 +1,12 @@
 # multiroom block
 
-This block provides an easy way to set up multiroom audio for your fleet of devices by using a pre-configured instance of [Snapcast](https://github.com/badaix/snapcast) audio player. Use it in conjunction with the [audio block](https://github.com/balenablocks/audio) for the best experience.
+This block provides an easy way to set up multiroom audio for your fleet of devices by using a pre-configured instance of [Snapcast](https://github.com/badaix/snapcast) audio player. Use it in conjunction with the [audio block](https://github.com/balena-labs-projects/audio) for the best experience.
 
 
 ## Features
 
 - Runs snapcast audio player (binaries for both server and client versions available)
-- Pre-configured to work with balena [audio block](https://github.com/balenablocks/audio)
+- Pre-configured to work with balena [audio block](https://github.com/balena-labs-projects/audio)
 
 ## Usage
 

@@ -3,7 +3,7 @@ version: '2'
 services:
 
   audio:
-    image: balenablocks/audio
+    image: bh.cr/balenalabs/audio
     privileged: true
     labels:
       io.balena.features.dbus: 1
